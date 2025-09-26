@@ -37,9 +37,7 @@ public class MenuNovo {
 
         comanda.setProdutos(listaConsumoDaComandaAserCriada);
 
-        System.out.println("Comanda da mesa " + comanda.getMesa() + " aberta com os seguintes produtos:");
-        for (Produto produto : comanda.getProdutos()) {
-            System.out.println(produto.getQuantidade() + " - " + produto.getNomeProduto() + " | Preço: R$ " + produto.getPrecoInteiro() * produto.getQuantidade());
-        }
+        numeroComandaAberta.fecharComanda(comanda);
+
     }
 }
