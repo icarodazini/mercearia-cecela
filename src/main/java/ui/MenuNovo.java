@@ -25,13 +25,15 @@ public class MenuNovo {
 
         //ADIÇÃO DE PRODUTOS INICIAL A COMANDA.
         Produto produtoAdicionado = categorias.adicionarProdutosConsumidos(produtosCadastrados);
-        listaConsumoDaComandaAserCriada.add(produtoAdicionado);
+        Produto produtoCopia = new Produto(produtoAdicionado); // cria uma cópia independente
+        listaConsumoDaComandaAserCriada.add(produtoCopia);
 
         Boolean respostaUsuario = categorias.desejaAdicionarMaisProdutos();
 
         while (respostaUsuario) {
-            Produto novoProdutoAdicionado = categorias.adicionarProdutosConsumidos(produtosCadastrados);
-            listaConsumoDaComandaAserCriada.add(novoProdutoAdicionado);
+            Produto produtoSelecionado = categorias.adicionarProdutosConsumidos(produtosCadastrados);
+            Produto novoProdutoCopia = new Produto(produtoSelecionado); // cria uma nova cópia a cada iteração
+            listaConsumoDaComandaAserCriada.add(novoProdutoCopia);
             respostaUsuario = categorias.desejaAdicionarMaisProdutos();
         }
 

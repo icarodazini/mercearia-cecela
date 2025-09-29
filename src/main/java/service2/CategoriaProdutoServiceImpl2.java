@@ -83,30 +83,24 @@ public class CategoriaProdutoServiceImpl2 {
     }
 
     public Produto adicionarQuantidadeProduto(Produto produto) {
-
-        System.out.println("Digite a quantidade que deseja adicionar:");
-        Integer quantidadeProduto = Integer.parseInt(scannerGlobal.nextLine().trim());
-
-        produto.setQuantidade(quantidadeProduto);
-
-        System.out.println("Você adicionou " + quantidadeProduto + "x " + produto.getNomeProduto() + " ao pedido.");
-
-        return produto;
-    }
-
-    /*
-    public void salvarPedido(Comanda comanda) {
-        System.out.println("MERCEARIA DA CECELA");
-        System.out.println(comanda.getMesa());
-        System.out.println("-------------------------------");
-        for (Produto produto : comanda.getProduto()) {
-            System.out.println(comanda.getProduto().getFirst().getNomeProduto() + " . . . . . R$ " + comanda.getProduto().getFirst().getPrecoInteiro());
+        //se o produto for porção, perguntar se é meia ou inteira
+        if (produto.isPorcao()) {
+            System.out.println("Você deseja a porção inteira ou meia? (DIGITE 1 PARA INTEIRA E 2 PARA MEIA)");
+            Integer escolhaMeiaInteira = Integer.parseInt(scannerGlobal.nextLine().trim());
+            if (escolhaMeiaInteira == 2) {
+                System.out.println("Você escolheu a porção meia.");
+                produto.setIsMeia(true);
+            }
         }
-        System.out.println("-------------------------------");
-        System.out.println("TOTAL:  R$ " + comanda.getSubtotal());
-        System.out.println("Obrigado e volte sempre!");
-    }
-     */
+            System.out.println("Digite a quantidade que deseja adicionar:");
+            Integer quantidadeProduto = Integer.parseInt(scannerGlobal.nextLine().trim());
+
+            produto.setQuantidade(quantidadeProduto);
+
+            System.out.println("Você adicionou " + quantidadeProduto + "x " + produto.getNomeProduto() + " ao pedido.");
+
+            return produto;
+        }
 
     public Boolean desejaAdicionarMaisProdutos(){
         System.out.println("Voce deseja adicionar mais algum produto? (SIM/NAO)");
