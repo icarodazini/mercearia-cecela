@@ -1,11 +1,11 @@
-package service2;
+package service;
 
 import model.Comanda;
 import model.Produto;
 
 import java.util.Scanner;
 
-public class ComandaService2 {
+public class ComandaService {
     Scanner scanner = new Scanner(System.in);
 
     public Integer abrirComanda() {
