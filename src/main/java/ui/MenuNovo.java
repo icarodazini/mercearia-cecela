@@ -2,8 +2,10 @@ package ui;
 
 import model.Comanda;
 import model.Produto;
+import org.w3c.dom.Text;
 import service.CategoriaProdutoServiceImpl;
 import service.ComandaService;
+import service.TextoService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,7 @@ public class MenuNovo {
         CategoriaProdutoServiceImpl categorias = new CategoriaProdutoServiceImpl();
         Comanda comanda = new Comanda();
         List<Produto> listaConsumoDaComandaAserCriada = new ArrayList<>();
+        TextoService   textoService = new TextoService();
 
         //pedindo um numero pro usuario abrir comanda
         Integer numeroDaMesaAberta = numeroComandaAberta.abrirComanda();
@@ -40,7 +43,11 @@ public class MenuNovo {
 
         comanda.setProdutos(listaConsumoDaComandaAserCriada);
 
-        numeroComandaAberta.fecharComanda(comanda);
+        Comanda comandaFechada = numeroComandaAberta.fecharComanda(comanda);
 
+        textoService.salvarComandaTxt(comandaFechada);
+
+        //fazer o metodo final de IMPRIMIR A COMANDA
+        //impressaoService.imprimir()
     }
 }
