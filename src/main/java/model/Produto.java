@@ -7,6 +7,7 @@ public class Produto {
     private Double precoMeia;
     private String tipoProduto;
     private Integer quantidade;
+    private Boolean isMeia= false;
 
     public Produto(int id, String nomeProduto, Double precoInteiro, Double precoMeia, String tipoProduto) {
         this.id = id;
@@ -15,19 +16,24 @@ public class Produto {
         this.precoMeia = precoMeia;
         this.tipoProduto = tipoProduto;
     }
-    public Produto(int id, String nomeProduto, Double precoInteiro) {
-        this(id, nomeProduto, precoInteiro, null, null);
+
+
+    public Produto(Produto outro) {
+        this.id = outro.id;
+        this.nomeProduto = outro.nomeProduto;
+        this.tipoProduto = outro.tipoProduto;
+        this.precoInteiro = outro.precoInteiro;
+        this.precoMeia = outro.precoMeia;
+        this.quantidade = outro.quantidade;
+        this.isMeia = outro.isMeia;
     }
 
-    public boolean temMeia() {
-        return precoMeia != null;
+    public Boolean getIsMeia() {
+        return isMeia;
     }
 
-    public Double getPreco(boolean meia) {
-        if (meia && precoMeia != null) {
-            return precoMeia;
-        }
-        return precoInteiro;
+    public void setIsMeia(Boolean meia) {
+        isMeia = meia;
     }
 
     public void setId(Integer id) {
@@ -70,7 +76,6 @@ public class Produto {
         return precoMeia;
     }
 
-
     public void setPrecoMeia(Double precoMeia) {
         this.precoMeia = precoMeia;
     }
@@ -82,4 +87,11 @@ public class Produto {
     public void setTipoProduto(String tipoProduto) {
         this.tipoProduto = tipoProduto;
     }
+
+    public boolean isPorcao() {
+        return this.tipoProduto.equalsIgnoreCase("PORCAO");
+
+    }
+
 }
+

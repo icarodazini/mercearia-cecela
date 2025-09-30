@@ -1,11 +1,11 @@
-package service2;
+package service;
 
 import model.Comanda;
 import model.Produto;
 
 import java.util.Scanner;
 
-public class ComandaService2 {
+public class ComandaService {
     Scanner scanner = new Scanner(System.in);
 
     public Integer abrirComanda() {
@@ -17,6 +17,12 @@ public class ComandaService2 {
         System.out.println("Fechando comanda da mesa " + comanda.getMesa() + ":");
         double total = 0.0;
         for (Produto produto : comanda.getProdutos()) {
+            if (produto.getIsMeia() == true){
+                double valorProdutoMeia = produto.getPrecoMeia() * produto.getQuantidade();
+                System.out.println(produto.getQuantidade() + " x  " + produto.getNomeProduto() + " | Preço: R$ " + valorProdutoMeia);
+                total += valorProdutoMeia;
+                continue;
+            }
             double valorProduto = produto.getPrecoInteiro() * produto.getQuantidade();
             System.out.println(produto.getQuantidade() + " x  " + produto.getNomeProduto() + " | Preço: R$ " + valorProduto);
             total += valorProduto;

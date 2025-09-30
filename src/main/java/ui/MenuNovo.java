@@ -2,8 +2,8 @@ package ui;
 
 import model.Comanda;
 import model.Produto;
-import service2.CategoriaProdutoServiceImpl2;
-import service2.ComandaService2;
+import service.CategoriaProdutoServiceImpl;
+import service.ComandaService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +11,9 @@ import java.util.List;
 public class MenuNovo {
 
     public static void exibirMenu(List<Produto> produtosCadastrados) {
-        ComandaService2 numeroComandaAberta = new ComandaService2();
-        CategoriaProdutoServiceImpl2 categorias = new CategoriaProdutoServiceImpl2();
+       //objetos necessarios
+        ComandaService numeroComandaAberta = new ComandaService();
+        CategoriaProdutoServiceImpl categorias = new CategoriaProdutoServiceImpl();
         Comanda comanda = new Comanda();
         List<Produto> listaConsumoDaComandaAserCriada = new ArrayList<>();
 
@@ -25,13 +26,15 @@ public class MenuNovo {
 
         //ADIÇÃO DE PRODUTOS INICIAL A COMANDA.
         Produto produtoAdicionado = categorias.adicionarProdutosConsumidos(produtosCadastrados);
-        listaConsumoDaComandaAserCriada.add(produtoAdicionado);
+        Produto produtoCopia = new Produto(produtoAdicionado); // cria uma cópia independente
+        listaConsumoDaComandaAserCriada.add(produtoCopia);
 
         Boolean respostaUsuario = categorias.desejaAdicionarMaisProdutos();
 
         while (respostaUsuario) {
-            Produto novoProdutoAdicionado = categorias.adicionarProdutosConsumidos(produtosCadastrados);
-            listaConsumoDaComandaAserCriada.add(novoProdutoAdicionado);
+            Produto produtoSelecionado = categorias.adicionarProdutosConsumidos(produtosCadastrados);
+            Produto novoProdutoCopia = new Produto(produtoSelecionado); // cria uma nova cópia a cada iteração
+            listaConsumoDaComandaAserCriada.add(novoProdutoCopia);
             respostaUsuario = categorias.desejaAdicionarMaisProdutos();
         }
 
