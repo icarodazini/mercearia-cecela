@@ -13,12 +13,8 @@ import java.util.Locale;
 
 public class TextoService {
 
-    // NOTE: O valor de alinhamento 40 será usado diretamente nos métodos.
-
     public void salvarComandaTxt(Comanda comanda) {
-        // Define a largura da linha de alinhamento
-        final int TOTAL_WIDTH = 31;
-        final String PRICE_PREFIX = "R$ ";
+        final int LARGURA_TOTAL = 31; // Define a largura total da linha
 
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatando = DateTimeFormatter.ofPattern("dd/MM/yyyy_HH:mm:ss");
@@ -26,18 +22,15 @@ public class TextoService {
 
         String nomeArquivo = "comanda_mesa_" + comanda.getMesa() + ".txt";
 
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(new Locale("pt", "BR"));
-        DecimalFormat df = new DecimalFormat("#,##0.00", symbols);
+        DecimalFormatSymbols simbolosBr = new DecimalFormatSymbols(new Locale("pt", "BR"));
+        DecimalFormat formatoDecimal = new DecimalFormat("#,##0.00", simbolosBr);
 
         try (FileWriter fw = new FileWriter(nomeArquivo, true);
              BufferedWriter writer = new BufferedWriter(fw)) {
 
-            // 1. NOME DA MERCEARIA (Alinhado à esquerda)
-            writer.write("MERCEARIA DA CECELA\n");
-
-            // 2. MESA (Centralizada na largura TOTAL_WIDTH)
-            writer.write(center("Mesa: " + comanda.getMesa(), TOTAL_WIDTH) + "\n");
-            writer.write("-".repeat(TOTAL_WIDTH) + "\n");
+            writer.write("BAR DA CECELA\n");
+            writer.write(centralizar("Mesa: " + comanda.getMesa(), LARGURA_TOTAL) + "\n"); // Mesa centralizada de acordo com a largura total
+            writer.write("-".repeat(LARGURA_TOTAL) + "\n");
 
             double total = 0.0;
             for (Produto produto : comanda.getProdutos()) {
@@ -49,51 +42,45 @@ public class TextoService {
                 total += valorTotalLinha;
 
                 // Formata a linha do produto
-                writer.write(formatarLinhaProduto(produto, valorTotalLinha, df));
+                writer.write(formatarLinhaProduto(produto, valorTotalLinha, formatoDecimal));
             }
 
-            writer.write("-".repeat(TOTAL_WIDTH) + "\n");
+            writer.write("-".repeat(LARGURA_TOTAL) + "\n");
 
-            // RODAPÉ (Centralizado/Recuado)
-            String totalStr = "TOTAL: R$ " + df.format(total);
-            writer.write(center(totalStr, TOTAL_WIDTH) + "\n");
+            // Centraliza o rodapé
+            String totalStr = "TOTAL: R$ " + formatoDecimal.format(total);
+            writer.write(centralizar(totalStr, LARGURA_TOTAL) + "\n");
 
             String dataStr = "Data: " + dataFormatada;
-            writer.write(center(dataStr, TOTAL_WIDTH) + "\n");
+            writer.write(centralizar(dataStr, LARGURA_TOTAL) + "\n");
 
-            writer.write(center("Obrigado e volte sempre!", TOTAL_WIDTH) + "\n");
+            writer.write(centralizar("Obrigado e volte sempre!", LARGURA_TOTAL) + "\n");
 
         } catch (Exception e) {
             System.out.println("Erro ao salvar comanda: " + e.getMessage());
         }
     }
 
-    /**
-     * Formata a linha do produto com nome COMPLETO e espaçamento fixo de 6 caracteres.
-     * O nome NUNCA será cortado, mesmo que a linha ultrapasse 40 caracteres.
-     */
-    private String formatarLinhaProduto(Produto produto, double valorTotalLinha, DecimalFormat df) {
+    private String formatarLinhaProduto(Produto produto, double valorTotalLinha, DecimalFormat formatoDecimal) {
 
-        // Mantemos 40 e R$ para que os métodos possam usá-los internamente.
-        final int TOTAL_WIDTH = 40;
-        final String PRICE_PREFIX = "R$ ";
-        final int SPACING_WIDTH = 6; // Espaçamento fixo desejado
+        final String PREFIXO_DE_PRECO = "R$ ";
+        final int ESPACO_LARGURA = 6; // Espaçamento
 
-        String precoStr = PRICE_PREFIX + df.format(valorTotalLinha);
+        String precoStr = PREFIXO_DE_PRECO + formatoDecimal.format(valorTotalLinha);
         String prefixoQty = produto.getQuantidade() + "x ";
 
         String linhaDescricao = produto.getNomeProduto();
         String prefixoCompleto = prefixoQty + linhaDescricao;
 
-        // O espaçamento agora é FIXO e não depende de cálculo de largura.
-        String espacamento = " ".repeat(SPACING_WIDTH);
+        // Espaçamento fixo entre o nome do produto e preço
+        String espacamento = " ".repeat(ESPACO_LARGURA);
 
-        // A linha final pode exceder 40 caracteres, mas não será cortada por esta lógica.
+        // Garante que a linha não exceda um certo comprimento
         return prefixoCompleto + espacamento + precoStr + "\n";
     }
 
-    /** Alinha uma string ao centro. */
-    private String center(String s, int n) {
+    // Centraliza uma string ao centro.
+    private String centralizar(String s, int n) {
         if (s == null) s = "";
         if (s.length() >= n) return s.substring(0, n);
         int padding = n - s.length();
