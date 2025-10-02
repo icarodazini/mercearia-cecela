@@ -4,6 +4,7 @@ import model.Comanda;
 import model.Produto;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -13,7 +14,7 @@ import java.util.Locale;
 
 public class TextoService {
 
-    public void salvarComandaTxt(Comanda comanda) {
+    public String salvarComandaTxt(Comanda comanda) {
         final int LARGURA_TOTAL = 31; // Define a largura total da linha
 
         LocalDateTime now = LocalDateTime.now();
@@ -21,6 +22,7 @@ public class TextoService {
         String dataFormatada = now.format(formatando);
 
         String nomeArquivo = "comanda_mesa_" + comanda.getMesa() + ".txt";
+        String pathCompleto = new File(nomeArquivo).getAbsolutePath();
 
         DecimalFormatSymbols simbolosBr = new DecimalFormatSymbols(new Locale("pt", "BR"));
         DecimalFormat formatoDecimal = new DecimalFormat("#,##0.00", simbolosBr);
@@ -59,6 +61,7 @@ public class TextoService {
         } catch (Exception e) {
             System.out.println("Erro ao salvar comanda: " + e.getMessage());
         }
+        return pathCompleto;
     }
 
     private String formatarLinhaProduto(Produto produto, double valorTotalLinha, DecimalFormat formatoDecimal) {

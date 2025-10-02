@@ -2,17 +2,23 @@ package ui;
 
 import model.Comanda;
 import model.Produto;
-import service2.CategoriaProdutoServiceImpl2;
-import service2.ComandaService2;
+import service.CategoriaProdutoServiceImpl;
+import service.ComandaService;
+import service.ImpressaoService;
+import service.TextoService;
 
+import javax.print.PrintException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MenuNovo {
 
     public static void exibirMenu(List<Produto> produtosCadastrados) {
-        ComandaService2 numeroComandaAberta = new ComandaService2();
-        CategoriaProdutoServiceImpl2 categorias = new CategoriaProdutoServiceImpl2();
+        ComandaService numeroComandaAberta = new ComandaService();
+        CategoriaProdutoServiceImpl categorias = new CategoriaProdutoServiceImpl();
+        TextoService textoService = new TextoService();
+        //ImpressaoService impressaoService = new ImpressaoService();
         Comanda comanda = new Comanda();
         List<Produto> listaConsumoDaComandaAserCriada = new ArrayList<>();
 
@@ -39,12 +45,9 @@ public class MenuNovo {
 
         Comanda comandaFechada = numeroComandaAberta.fecharComanda(comanda);
 
-        textoService.salvarComandaTxt(comandaFechada);
 
-        //fazer o metodo final de IMPRIMIR A COMANDA
-        //impressaoService.imprimir()
+        String path = textoService.salvarComandaTxt(comandaFechada);
 
-        String path = "C:\\Users\\Karine\\Documents\\mercearia-cecela\\test.txt";
         try {
             ImpressaoService.imprimirCupom(path);
         } catch (IOException e) {
