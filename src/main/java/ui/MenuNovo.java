@@ -2,10 +2,8 @@ package ui;
 
 import model.Comanda;
 import model.Produto;
-import org.w3c.dom.Text;
-import service.CategoriaProdutoServiceImpl;
-import service.ComandaService;
-import service.TextoService;
+import service2.CategoriaProdutoServiceImpl2;
+import service2.ComandaService2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +11,10 @@ import java.util.List;
 public class MenuNovo {
 
     public static void exibirMenu(List<Produto> produtosCadastrados) {
-       //objetos necessarios
-        ComandaService numeroComandaAberta = new ComandaService();
-        CategoriaProdutoServiceImpl categorias = new CategoriaProdutoServiceImpl();
+        ComandaService2 numeroComandaAberta = new ComandaService2();
+        CategoriaProdutoServiceImpl2 categorias = new CategoriaProdutoServiceImpl2();
         Comanda comanda = new Comanda();
         List<Produto> listaConsumoDaComandaAserCriada = new ArrayList<>();
-        TextoService   textoService = new TextoService();
 
         //pedindo um numero pro usuario abrir comanda
         Integer numeroDaMesaAberta = numeroComandaAberta.abrirComanda();
@@ -29,15 +25,13 @@ public class MenuNovo {
 
         //ADIÇÃO DE PRODUTOS INICIAL A COMANDA.
         Produto produtoAdicionado = categorias.adicionarProdutosConsumidos(produtosCadastrados);
-        Produto produtoCopia = new Produto(produtoAdicionado); // cria uma cópia independente
-        listaConsumoDaComandaAserCriada.add(produtoCopia);
+        listaConsumoDaComandaAserCriada.add(produtoAdicionado);
 
         Boolean respostaUsuario = categorias.desejaAdicionarMaisProdutos();
 
         while (respostaUsuario) {
-            Produto produtoSelecionado = categorias.adicionarProdutosConsumidos(produtosCadastrados);
-            Produto novoProdutoCopia = new Produto(produtoSelecionado); // cria uma nova cópia a cada iteração
-            listaConsumoDaComandaAserCriada.add(novoProdutoCopia);
+            Produto novoProdutoAdicionado = categorias.adicionarProdutosConsumidos(produtosCadastrados);
+            listaConsumoDaComandaAserCriada.add(novoProdutoAdicionado);
             respostaUsuario = categorias.desejaAdicionarMaisProdutos();
         }
 
@@ -49,5 +43,14 @@ public class MenuNovo {
 
         //fazer o metodo final de IMPRIMIR A COMANDA
         //impressaoService.imprimir()
+
+        String path = "C:\\Users\\Karine\\Documents\\mercearia-cecela\\test.txt";
+        try {
+            ImpressaoService.imprimirCupom(path);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (PrintException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
