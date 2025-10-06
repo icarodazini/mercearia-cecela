@@ -14,49 +14,40 @@ import java.util.Locale;
 
 public class TextoService {
 
-    public String salvarComandaTxt(Comanda comanda) {
-        final int LARGURA_TOTAL = 31; // Define a largura total da linha
+    private static final int LARGURA_TOTAL = 31;
+    private static final int ESPACO_FIXO_PRODUTO = 6;
+    private static final String PREFIXO_PRECO = "R$ ";
+    private static final String NOME_EMPRESA = "BAR DA CECELA";
+    private static final String FORMATO_DATA_HORA = "dd/MM/yyyy_HH:mm:ss";
 
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatando = DateTimeFormatter.ofPattern("dd/MM/yyyy_HH:mm:ss");
-        String dataFormatada = now.format(formatando);
+    private static final DecimalFormat FORMATO_DECIMAL;
+
+    static {
+        DecimalFormatSymbols simbolosBr = new DecimalFormatSymbols(new Locale("pt", "BR"));
+        FORMATO_DECIMAL = new DecimalFormat("#,##0.00", simbolosBr);
+    }
+
+    public String salvarComandaTxt(Comanda comanda) {
+        LocalDateTime dataAgora = LocalDateTime.now();
+        String dataFormatada = dataAgora.format(DateTimeFormatter.ofPattern(FORMATO_DATA_HORA));
 
         String nomeArquivo = "comanda_mesa_" + comanda.getMesa() + ".txt";
         String pathCompleto = new File(nomeArquivo).getAbsolutePath();
 
-        DecimalFormatSymbols simbolosBr = new DecimalFormatSymbols(new Locale("pt", "BR"));
-        DecimalFormat formatoDecimal = new DecimalFormat("#,##0.00", simbolosBr);
-
         try (FileWriter fw = new FileWriter(nomeArquivo, true);
-             BufferedWriter writer = new BufferedWriter(fw)) {
+             BufferedWriter escritorBuffer = new BufferedWriter(fw)) {
 
-            writer.write("BAR DA CECELA\n");
-            writer.write(centralizar("Mesa: " + comanda.getMesa(), LARGURA_TOTAL) + "\n"); // Mesa centralizada de acordo com a largura total
-            writer.write("-".repeat(LARGURA_TOTAL) + "\n");
+            double totalGeral = 0.0;
 
-            double total = 0.0;
+            escritorBuffer.write(escreverCabecalho(comanda, LARGURA_TOTAL));
+
             for (Produto produto : comanda.getProdutos()) {
-
-                double valorTotalLinha = produto.getIsMeia()
-                        ? (produto.getPrecoMeia() != null ? produto.getPrecoMeia() * produto.getQuantidade() : 0.0)
-                        : produto.getPrecoInteiro() * produto.getQuantidade();
-
-                total += valorTotalLinha;
-
-                // Formata a linha do produto
-                writer.write(formatarLinhaProduto(produto, valorTotalLinha, formatoDecimal));
+                double valorTotalLinha = calcularValorTotalLinha(produto);
+                totalGeral += valorTotalLinha;
+                escritorBuffer.write(formatarLinhaProduto(produto, valorTotalLinha));
             }
 
-            writer.write("-".repeat(LARGURA_TOTAL) + "\n");
-
-            // Centraliza o rodapé
-            String totalStr = "TOTAL: R$ " + formatoDecimal.format(total);
-            writer.write(centralizar(totalStr, LARGURA_TOTAL) + "\n");
-
-            String dataStr = "Data: " + dataFormatada;
-            writer.write(centralizar(dataStr, LARGURA_TOTAL) + "\n");
-
-            writer.write(centralizar("Obrigado e volte sempre!", LARGURA_TOTAL) + "\n");
+            escritorBuffer.write(escreverRodape(totalGeral, dataFormatada, LARGURA_TOTAL));
 
         } catch (Exception e) {
             System.out.println("Erro ao salvar comanda: " + e.getMessage());
@@ -64,30 +55,55 @@ public class TextoService {
         return pathCompleto;
     }
 
-    private String formatarLinhaProduto(Produto produto, double valorTotalLinha, DecimalFormat formatoDecimal) {
-
-        final String PREFIXO_DE_PRECO = "R$ ";
-        final int ESPACO_LARGURA = 6; // Espaçamento
-
-        String precoStr = PREFIXO_DE_PRECO + formatoDecimal.format(valorTotalLinha);
-        String prefixoQty = produto.getQuantidade() + "x ";
-
-        String linhaDescricao = produto.getNomeProduto();
-        String prefixoCompleto = prefixoQty + linhaDescricao;
-
-        // Espaçamento fixo entre o nome do produto e preço
-        String espacamento = " ".repeat(ESPACO_LARGURA);
-
-        // Garante que a linha não exceda um certo comprimento
-        return prefixoCompleto + espacamento + precoStr + "\n";
+    private double calcularValorTotalLinha(Produto produto) {
+        if (produto.getIsMeia()) {
+            if (produto.getPrecoMeia() != null) {
+                return produto.getPrecoMeia() * produto.getQuantidade();
+            }
+            return 0.0;
+        }
+        return produto.getPrecoInteiro() * produto.getQuantidade();
     }
 
-    // Centraliza uma string ao centro.
-    private String centralizar(String s, int n) {
-        if (s == null) s = "";
-        if (s.length() >= n) return s.substring(0, n);
-        int padding = n - s.length();
-        int padLeft = padding / 2;
-        return " ".repeat(padLeft) + s + " ".repeat(padding - padLeft);
+    private String formatarLinhaProduto(Produto produto, double valorTotalLinha) {
+        String precoStr = PREFIXO_PRECO + FORMATO_DECIMAL.format(valorTotalLinha);
+        String prefixoQtde = produto.getQuantidade() + "x ";
+
+        String nomeCompleto = prefixoQtde + produto.getNomeProduto();
+        String espacamento = " ".repeat(ESPACO_FIXO_PRODUTO);
+
+        return nomeCompleto + espacamento + precoStr + "\n";
+    }
+
+    private String escreverCabecalho(Comanda comanda, int largura) {
+        StringBuilder construtorString = new StringBuilder();
+        construtorString.append(NOME_EMPRESA).append("\n");
+        construtorString.append(centralizar("Mesa: " + comanda.getMesa(), largura)).append("\n");
+        construtorString.append("-".repeat(largura)).append("\n");
+        return construtorString.toString();
+    }
+
+    private String escreverRodape(double totalGeral, String dataFormatada, int largura) {
+        StringBuilder construtorString = new StringBuilder();
+
+        construtorString.append("-".repeat(largura)).append("\n");
+
+        String totalStr = "TOTAL: R$ " + FORMATO_DECIMAL.format(totalGeral);
+        construtorString.append(centralizar(totalStr, largura)).append("\n");
+
+        String dataStr = "Data: " + dataFormatada;
+        construtorString.append(centralizar(dataStr, largura)).append("\n");
+
+        construtorString.append(centralizar("Obrigado e volte sempre!", largura)).append("\n");
+
+        return construtorString.toString();
+    }
+
+    private String centralizar(String texto, int largura) {
+        if (texto == null) texto = "";
+        if (texto.length() >= largura) return texto.substring(0, largura);
+        int preenchimento = largura - texto.length();
+        int preenchimentoEsquerda = preenchimento / 2;
+        return " ".repeat(preenchimentoEsquerda) + texto + " ".repeat(preenchimento - preenchimentoEsquerda);
     }
 }

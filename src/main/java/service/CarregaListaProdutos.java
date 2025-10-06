@@ -11,29 +11,29 @@ public class CarregaListaProdutos {
         List<Produto> produtos = new ArrayList<>();
 
         // PORÇÕES DISPONÍVEIS ↓
-        produtos.add(new Produto(1, "Contra Filé (só carne)", 70.0, 50.0, "PORCAO"));
-        produtos.add(new Produto(2, "Contra Filé c/fritas ou mandioca", 62.0, 45.0, "PORCAO"));
-        produtos.add(new Produto(3, "Filé de frango c/fritas ou mandioca", 50.0, 35.0, "PORCAO"));
-        produtos.add(new Produto(4, "Anéis de cebola", 40.0, 20.0, "PORCAO"));
+        produtos.add(new Produto(1, "Contra File (so carne)", 70.0, 50.0, "PORCAO"));
+        produtos.add(new Produto(2, "Contra File c/fritas ou mandioca", 62.0, 45.0, "PORCAO"));
+        produtos.add(new Produto(3, "File de frango c/fritas ou mandioca", 50.0, 35.0, "PORCAO"));
+        produtos.add(new Produto(4, "Aneis de cebola", 40.0, 20.0, "PORCAO"));
         produtos.add(new Produto(5, "Batata frita simples", 30.0, 25.0, "PORCAO"));
         produtos.add(new Produto(6, "Batata frita especial", 40.0, 30.0, "PORCAO"));
-        produtos.add(new Produto(7, "Calabresa ou linguiça c/fritas ou mandioca", 50.0, 37.0, "PORCAO"));
-        produtos.add(new Produto(8, "Frango á passarinho ao alho", 30.0, null, "PORCAO"));
+        produtos.add(new Produto(7, "Calabresa ou linguica c/fritas ou mandioca", 50.0, 37.0, "PORCAO"));
+        produtos.add(new Produto(8, "Frango a passarinho ao alho", 30.0, null, "PORCAO"));
         produtos.add(new Produto(9, "Trio mineiro", 55.0, 40.0, "PORCAO"));
-        produtos.add(new Produto(10, "Filé de tilápia", 60.0, 45.0, "PORCAO"));
-        produtos.add(new Produto(11, "Filé de tilápia c/fritas ou mandioca", 70.0, 50.0, "PORCAO"));
+        produtos.add(new Produto(10, "File de tilapia", 60.0, 45.0, "PORCAO"));
+        produtos.add(new Produto(11, "File de tilapia c/fritas ou mandioca", 70.0, 50.0, "PORCAO"));
         produtos.add(new Produto(12, "Quarteto da Cecela", 60.0, 45.0, "PORCAO"));
         produtos.add(new Produto(13, "Torresmo c/fritas ou mandioca", 50.0, 37.0, "PORCAO"));
         produtos.add(new Produto(14, "Trem da casa", 55.0, 40.0, "PORCAO"));
-        produtos.add(new Produto(15, "Potes (torresmo/ frango/ calabresa/ linguiça)", 25.0, null, "PORCAO"));
-        produtos.add(new Produto(16, "Acréscimo de queijo ou bacon", 5.0, null, "PORCAO"));
+        produtos.add(new Produto(15, "Potes (torresmo/ frango/ calabresa/ linguica)", 25.0, null, "PORCAO"));
+        produtos.add(new Produto(16, "Acrescimo de queijo ou bacon", 5.0, null, "PORCAO"));
 
 
         // BEBIDAS DISPONÍVEIS ↓
-        produtos.add(new Produto(17, "Água", 2.50, null, "BEBIDA"));
-        produtos.add(new Produto(18, "Água com gás", 3.0, null, "BEBIDA"));
-        produtos.add(new Produto(19, "Tónica Antártica 350ml", 5.0, null, "BEBIDA"));
-        produtos.add(new Produto(20, "Tónica Schweppes 350ml", 5.0, null, "BEBIDA"));
+        produtos.add(new Produto(17, "Agua", 2.50, null, "BEBIDA"));
+        produtos.add(new Produto(18, "Agua com gas", 3.0, null, "BEBIDA"));
+        produtos.add(new Produto(19, "Tonica Antartica 350ml", 5.0, null, "BEBIDA"));
+        produtos.add(new Produto(20, "Tonica Schweppes 350ml", 5.0, null, "BEBIDA"));
         produtos.add(new Produto(21, "Ice Tea 450ml", 5.0, null, "BEBIDA"));
         produtos.add(new Produto(22, "Ice Tea 1,5L", 8.0, null, "BEBIDA"));
         produtos.add(new Produto(23, "Del vale 1,5L", 6.0, null, "BEBIDA"));
@@ -43,33 +43,33 @@ public class CarregaListaProdutos {
         produtos.add(new Produto(27, "Refri 200ml", 3.0, null, "BEBIDA"));
         produtos.add(new Produto(28, "Refri 350ml", 5.0, null, "BEBIDA"));
         produtos.add(new Produto(29, "Refri 600ml", 6.0, null, "BEBIDA"));
-        produtos.add(new Produto(30, "H2O Limão", 5.50, null, "BEBIDA"));
+        produtos.add(new Produto(30, "H2O Limao", 5.50, null, "BEBIDA"));
         produtos.add(new Produto(31, "H2O Limoneto", 5.50, null, "BEBIDA"));
         produtos.add(new Produto(32, "Sprite Lemon 600ml", 5.0, null, "BEBIDA"));
-        produtos.add(new Produto(33, "Coca Cola 1L (retornável)", 5.50, null, "BEBIDA"));
+        produtos.add(new Produto(33, "Coca Cola 1L (retornavel)", 5.50, null, "BEBIDA"));
         produtos.add(new Produto(34, "Coca Cola 2L", 12.0, null, "BEBIDA"));
-        produtos.add(new Produto(35, "Coca Cola 2L (retornável)", 8.0, null, "BEBIDA"));
-        produtos.add(new Produto(36, "Coca Zero 2L (retornável)", 8.0, null, "BEBIDA"));
-        produtos.add(new Produto(37, "Pepsi 1L (retornável)", 5.50, null, "BEBIDA"));
+        produtos.add(new Produto(35, "Coca Cola 2L (retornavel)", 8.0, null, "BEBIDA"));
+        produtos.add(new Produto(36, "Coca Zero 2L (retornavel)", 8.0, null, "BEBIDA"));
+        produtos.add(new Produto(37, "Pepsi 1L (retornavel)", 5.50, null, "BEBIDA"));
         produtos.add(new Produto(38, "Pepsi 2L ", 10.0, null, "BEBIDA"));
-        produtos.add(new Produto(39, "Fanta Uva 2L (retornável)", 8.0, null, "BEBIDA"));
-        produtos.add(new Produto(40, "Fanta Laranja 2L (retornável)", 8.0, null, "BEBIDA"));
-        produtos.add(new Produto(41, "Antarctica 1L (retornável)", 5.50, null, "BEBIDA"));
+        produtos.add(new Produto(39, "Fanta Uva 2L (retornavel)", 8.0, null, "BEBIDA"));
+        produtos.add(new Produto(40, "Fanta Laranja 2L (retornavel)", 8.0, null, "BEBIDA"));
+        produtos.add(new Produto(41, "Antarctica 1L (retornavel)", 5.50, null, "BEBIDA"));
         produtos.add(new Produto(42, "Antarctica 2L", 11.0, null, "BEBIDA"));
-        produtos.add(new Produto(43, "It Guaraná/Laranja 2L ", 6.0, null, "BEBIDA"));
+        produtos.add(new Produto(43, "It Guarana/Laranja 2L ", 6.0, null, "BEBIDA"));
         produtos.add(new Produto(44, "Kuat 2L", 9.0, null, "BEBIDA"));
         produtos.add(new Produto(45, "Sprite 1,5L", 8.50, null, "BEBIDA"));
         produtos.add(new Produto(46, "Sprite 2L", 11.0, null, "BEBIDA"));
         produtos.add(new Produto(47, "Caipirinha", 10.0, null, "BEBIDA"));
-        produtos.add(new Produto(48, "Caipiríssima", 12.0, null, "BEBIDA"));
+        produtos.add(new Produto(48, "Caipirissima", 12.0, null, "BEBIDA"));
         produtos.add(new Produto(49, "Skol Beats", 7.50, null, "BEBIDA"));
         produtos.add(new Produto(50, "Chop de vinho (Stempel)", 11.0, null, "BEBIDA"));
-        produtos.add(new Produto(51, "Taça de vinho", 8.0, null, "BEBIDA"));
+        produtos.add(new Produto(51, "Taca de vinho", 8.0, null, "BEBIDA"));
 
         // WHISKY/DESTILADOS DISPONÍVEIS ↓
         produtos.add(new Produto(52, "Red Label (Dose)", 10.0, null, "BEBIDA"));
         produtos.add(new Produto(53, "White Horse (Dose)", 10.0, null, "BEBIDA"));
-        produtos.add(new Produto(54, "Pinga da roça", 3.0, null, "BEBIDA"));
+        produtos.add(new Produto(54, "Pinga da roca", 3.0, null, "BEBIDA"));
         produtos.add(new Produto(55, "Canelinha", 3.0, null, "BEBIDA"));
         produtos.add(new Produto(56, "Conhaque (presidente)", 4.0, null, "BEBIDA"));
         produtos.add(new Produto(57, "Araci (Amarela)", 3.0, null, "BEBIDA"));
@@ -95,7 +95,7 @@ public class CarregaListaProdutos {
         produtos.add(new Produto(71, "Petra 600ml", 8.0, null, "BEBIDA"));
         produtos.add(new Produto(72, "Skol 600ml", 8.0, null, "BEBIDA"));
         produtos.add(new Produto(73, "Brahma 600ml", 8.50, null, "BEBIDA"));
-        produtos.add(new Produto(74, "Antártica Original 600ml", 11.0, null, "BEBIDA"));
+        produtos.add(new Produto(74, "Antartica Original 600ml", 11.0, null, "BEBIDA"));
         produtos.add(new Produto(75, "Amstel 600ml", 8.50, null, "BEBIDA"));
         produtos.add(new Produto(76, "Eisenbahn Unfiltered 600ml", 8.50, null, "BEBIDA"));
 
@@ -104,7 +104,7 @@ public class CarregaListaProdutos {
         produtos.add(new Produto(78, "Bohemia 1L", 9.50, null, "BEBIDA"));
         produtos.add(new Produto(79, "Budweiser 1L", 11.0, null, "BEBIDA"));
         produtos.add(new Produto(80, "Skol 1L", 9.50, null, "BEBIDA"));
-        produtos.add(new Produto(81, "Antártica 1L", 8.50, null, "BEBIDA"));
+        produtos.add(new Produto(81, "Antartica 1L", 8.50, null, "BEBIDA"));
         produtos.add(new Produto(82, "Petra 1L", 9.0, null, "BEBIDA"));
         produtos.add(new Produto(83, "Amstel 1L", 9.0, null, "BEBIDA"));
 
