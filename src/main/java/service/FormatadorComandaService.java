@@ -20,6 +20,7 @@ public class FormatadorComandaService {
     private static final String NOME_EMPRESA = "BAR DA CECELA";
     private static final String FORMATO_DATA_HORA = "dd/MM/yyyy_HH:mm:ss";
     private static final DecimalFormat FORMATO_DECIMAL;
+    private static final String PREFIXO_MEIA = " (MEIA) ";
 
     static {
         DecimalFormatSymbols simbolosBr = new DecimalFormatSymbols(new Locale("pt", "BR"));
@@ -67,6 +68,14 @@ public class FormatadorComandaService {
     }
 
     private String formatarLinhaProduto(Produto produto, double valorTotalLinha) {
+        if (produto.getIsMeia()) {
+            String precoStrMeia = PREFIXO_PRECO + FORMATO_DECIMAL.format(valorTotalLinha);
+            String prefixoQtdeMeia = produto.getQuantidade() + "x ";
+            String nomeCompletoMeia = prefixoQtdeMeia + produto.getNomeProduto() + PREFIXO_MEIA;
+
+            return nomeCompletoMeia + precoStrMeia + "\n";
+        }
+
         String precoStr = PREFIXO_PRECO + FORMATO_DECIMAL.format(valorTotalLinha);
         String prefixoQtde = produto.getQuantidade() + "x ";
 
