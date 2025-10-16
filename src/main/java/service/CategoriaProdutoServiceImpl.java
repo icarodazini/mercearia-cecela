@@ -107,83 +107,66 @@ public class CategoriaProdutoServiceImpl {
 
         for (int i = 0; i < itensPorColuna; i++) {
 
+            // --- COLUNA 1 ---
             Produto produto1 = bebidas.get(i);
-            // Formata com padding (não é a última coluna)
-            String linha1 = formatarLinhaProduto(produto1, LARGURA_COLUNA, false);
+            String coluna1 = formatarLinhaProduto(produto1, LARGURA_COLUNA, false);
 
-            String linha2 = "";
-            int indiceColuna2 = i + itensPorColuna; // i + 25
+            // --- COLUNA 1 ---
+            String coluna2 = "";
+            int indiceColuna2 = i + itensPorColuna;
 
             if (indiceColuna2 < totalItens) {
                 Produto produto2 = bebidas.get(indiceColuna2);
-                // Formata com padding (não é a última coluna)
-                linha2 = formatarLinhaProduto(produto2, LARGURA_COLUNA, false);
+                coluna2 = formatarLinhaProduto(produto2, LARGURA_COLUNA, false);
             } else {
-                // Se a coluna 2 acabou, preenche com espaços para alinhar a coluna 3 (se houver)
-                linha2 = " ".repeat(LARGURA_COLUNA);
+                coluna2 = " ".repeat(LARGURA_COLUNA);
             }
 
-            String linha3 = "";
-            int indiceColuna3 = i + (2 * itensPorColuna); // i + 50
+            // --- COLUNA 1 ---
+            String coluna3 = "";
+            int indiceColuna3 = i + (2 * itensPorColuna);
 
             if (indiceColuna3 < totalItens) {
                 Produto produto3 = bebidas.get(indiceColuna3);
-                // Formata sem padding (é a última coluna)
-                linha3 = formatarLinhaProduto(produto3, LARGURA_COLUNA, true);
+                coluna3 = formatarLinhaProduto(produto3, LARGURA_COLUNA, true);
             }
 
-            // Combina e imprime
-            System.out.println(linha1 + linha2 + linha3);
+            System.out.println(coluna1 + coluna2 + coluna3);
         }
     }
 
     private String formatarLinhaProduto(Produto produto, int larguraDesejada, boolean isUltimaColuna) {
-        // Usa o preço inteiro (bebidas não têm meia porção) formatado para 2 casas
         String precoStr = String.format("R$ %.2f", produto.getPrecoInteiro());
         String idStr = String.valueOf(produto.getId());
         String nomeOriginal = produto.getNomeProduto();
 
-        // 1. Calcular o espaço TOTAL que o ID e o Preço ocupam
-        // Ex: "ID" + " - " + "NOME" + " - " + "R$ 0.00"
-        // Espaço fixo (ID, R$, espaços, hífens): ID(3) + " - " (3) + " - " (3) + Preco (7-8)
-        // Usamos um valor seguro (8) para os separadores.
         final int TAMANHO_FIXO_SEM_NOME = idStr.length() + precoStr.length() + 8;
 
         int espacoDisponivelParaNome = larguraDesejada - TAMANHO_FIXO_SEM_NOME;
 
         String nomeDisplay;
-        boolean nomeFoiTruncado = false;
 
         if (nomeOriginal.length() > espacoDisponivelParaNome) {
-            // Se o nome é maior que o espaço disponível, trunca e adiciona "..."
-            // Corta 3 caracteres para o "..."
             int pontoDeCorte = Math.max(0, espacoDisponivelParaNome - 3);
             nomeDisplay = nomeOriginal.substring(0, pontoDeCorte).trim() + "...";
-            nomeFoiTruncado = true;
         } else {
             nomeDisplay = nomeOriginal;
         }
 
-        // 2. Montar a Linha de Display
         String linhaDisplay = String.format("%s - %s - %s",
                 idStr,
                 nomeDisplay,
                 precoStr
         );
 
-        // 3. Aplicar o Alinhamento (Padding)
         if (isUltimaColuna) {
-            // A última coluna não precisa de padding de alinhamento
             return linhaDisplay;
         }
 
-        // Se não for a última coluna, garante que a linha tenha EXATAMENTE a largura desejada
         if (linhaDisplay.length() >= larguraDesejada) {
-            // Se, por alguma razão, o cálculo acima falhou, trunca no limite da coluna
             return linhaDisplay.substring(0, larguraDesejada);
         }
 
-        // Adiciona o padding (espaços) para alinhar a próxima coluna
         return linhaDisplay + " ".repeat(larguraDesejada - linhaDisplay.length());
     }
 
@@ -197,7 +180,7 @@ public class CategoriaProdutoServiceImpl {
             if (respostaInt == 1) {
                 return true;
             }
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             System.out.println("Entrada inválida. Por favor, digite 1 para SIM ou 0 para NAO.");
         }
         System.out.println("Finalizando pedido...");
