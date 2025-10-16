@@ -33,7 +33,7 @@ public class CategoriaProdutoServiceImpl {
                     .filter(produto -> produto.getTipoProduto().equalsIgnoreCase("BEBIDA"))
                     .toList();
 
-            bebidas.forEach(produto -> System.out.println(produto.getId() + " - " + produto.getNomeProduto() + " - R$ " + produto.getPrecoInteiro()));
+            exibirBebidasEmTresColunas(bebidas);
 
             return bebidas;
         }
@@ -81,7 +81,6 @@ public class CategoriaProdutoServiceImpl {
     }
 
     public Produto adicionarQuantidadeProduto(Produto produto) {
-        //se o produto for porção, perguntar se é meia ou inteira
         if (produto.isPorcao()) {
             System.out.println("Você deseja a porção inteira ou meia? (DIGITE 1 PARA INTEIRA E 2 PARA MEIA)");
             Integer escolhaMeiaInteira = Integer.parseInt(scannerGlobal.nextLine().trim());
@@ -90,22 +89,116 @@ public class CategoriaProdutoServiceImpl {
                 produto.setIsMeia(true);
             }
         }
-            System.out.println("Digite a quantidade que deseja adicionar:");
-            Integer quantidadeProduto = Integer.parseInt(scannerGlobal.nextLine().trim());
+        System.out.println("Digite a quantidade que deseja adicionar:");
+        Integer quantidadeProduto = Integer.parseInt(scannerGlobal.nextLine().trim());
 
-            produto.setQuantidade(quantidadeProduto);
+        produto.setQuantidade(quantidadeProduto);
 
-            System.out.println("Você adicionou " + quantidadeProduto + "x " + produto.getNomeProduto() + " ao pedido.");
+        System.out.println("Você adicionou " + quantidadeProduto + "x " + produto.getNomeProduto() + " ao pedido.");
 
-            return produto;
+        return produto;
+    }
+
+    private void exibirBebidasEmTresColunas(List<Produto> bebidas) {
+        final int LARGURA_COLUNA = 50;
+
+        int totalItens = bebidas.size(); // 74
+        int itensPorColuna = (int) Math.ceil((double) totalItens / 3); // 25
+
+        for (int i = 0; i < itensPorColuna; i++) {
+
+            Produto produto1 = bebidas.get(i);
+            // Formata com padding (não é a última coluna)
+            String linha1 = formatarLinhaProduto(produto1, LARGURA_COLUNA, false);
+
+            String linha2 = "";
+            int indiceColuna2 = i + itensPorColuna; // i + 25
+
+            if (indiceColuna2 < totalItens) {
+                Produto produto2 = bebidas.get(indiceColuna2);
+                // Formata com padding (não é a última coluna)
+                linha2 = formatarLinhaProduto(produto2, LARGURA_COLUNA, false);
+            } else {
+                // Se a coluna 2 acabou, preenche com espaços para alinhar a coluna 3 (se houver)
+                linha2 = " ".repeat(LARGURA_COLUNA);
+            }
+
+            String linha3 = "";
+            int indiceColuna3 = i + (2 * itensPorColuna); // i + 50
+
+            if (indiceColuna3 < totalItens) {
+                Produto produto3 = bebidas.get(indiceColuna3);
+                // Formata sem padding (é a última coluna)
+                linha3 = formatarLinhaProduto(produto3, LARGURA_COLUNA, true);
+            }
+
+            // Combina e imprime
+            System.out.println(linha1 + linha2 + linha3);
+        }
+    }
+
+    private String formatarLinhaProduto(Produto produto, int larguraDesejada, boolean isUltimaColuna) {
+        // Usa o preço inteiro (bebidas não têm meia porção) formatado para 2 casas
+        String precoStr = String.format("R$ %.2f", produto.getPrecoInteiro());
+        String idStr = String.valueOf(produto.getId());
+        String nomeOriginal = produto.getNomeProduto();
+
+        // 1. Calcular o espaço TOTAL que o ID e o Preço ocupam
+        // Ex: "ID" + " - " + "NOME" + " - " + "R$ 0.00"
+        // Espaço fixo (ID, R$, espaços, hífens): ID(3) + " - " (3) + " - " (3) + Preco (7-8)
+        // Usamos um valor seguro (8) para os separadores.
+        final int TAMANHO_FIXO_SEM_NOME = idStr.length() + precoStr.length() + 8;
+
+        int espacoDisponivelParaNome = larguraDesejada - TAMANHO_FIXO_SEM_NOME;
+
+        String nomeDisplay;
+        boolean nomeFoiTruncado = false;
+
+        if (nomeOriginal.length() > espacoDisponivelParaNome) {
+            // Se o nome é maior que o espaço disponível, trunca e adiciona "..."
+            // Corta 3 caracteres para o "..."
+            int pontoDeCorte = Math.max(0, espacoDisponivelParaNome - 3);
+            nomeDisplay = nomeOriginal.substring(0, pontoDeCorte).trim() + "...";
+            nomeFoiTruncado = true;
+        } else {
+            nomeDisplay = nomeOriginal;
         }
 
-    public Boolean desejaAdicionarMaisProdutos(){
-        System.out.println("Voce deseja adicionar mais algum produto? (SIM/NAO)");
-        String respostaUsuario = scannerGlobal.nextLine().trim().toUpperCase();
+        // 2. Montar a Linha de Display
+        String linhaDisplay = String.format("%s - %s - %s",
+                idStr,
+                nomeDisplay,
+                precoStr
+        );
 
-        if (respostaUsuario.equals("SIM")) {
-            return true;
+        // 3. Aplicar o Alinhamento (Padding)
+        if (isUltimaColuna) {
+            // A última coluna não precisa de padding de alinhamento
+            return linhaDisplay;
+        }
+
+        // Se não for a última coluna, garante que a linha tenha EXATAMENTE a largura desejada
+        if (linhaDisplay.length() >= larguraDesejada) {
+            // Se, por alguma razão, o cálculo acima falhou, trunca no limite da coluna
+            return linhaDisplay.substring(0, larguraDesejada);
+        }
+
+        // Adiciona o padding (espaços) para alinhar a próxima coluna
+        return linhaDisplay + " ".repeat(larguraDesejada - linhaDisplay.length());
+    }
+
+    public Boolean desejaAdicionarMaisProdutos() {
+        System.out.println("Voce deseja adicionar mais algum produto? (Digite 1 para SIM ou 0 para NAO)");
+        String respostaUsuario = scannerGlobal.nextLine().trim();
+
+        try {
+            Integer respostaInt = Integer.parseInt(respostaUsuario);
+
+            if (respostaInt == 1) {
+                return true;
+            }
+        }catch (NumberFormatException e){
+            System.out.println("Entrada inválida. Por favor, digite 1 para SIM ou 0 para NAO.");
         }
         System.out.println("Finalizando pedido...");
         return false;
