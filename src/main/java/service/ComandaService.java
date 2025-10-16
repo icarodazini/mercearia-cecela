@@ -19,7 +19,7 @@ public class ComandaService {
         for (Produto produto : comanda.getProdutos()) {
             if (produto.getIsMeia() == true){
                 double valorProdutoMeia = produto.getPrecoMeia() * produto.getQuantidade();
-                System.out.println(produto.getQuantidade() + " x  " + produto.getNomeProduto() + " | Preço: R$ " + valorProdutoMeia);
+                System.out.println(produto.getQuantidade() + " x  " + produto.getNomeProduto() + " (MEIA)" + " | Preço: R$ " + valorProdutoMeia);
                 total += valorProdutoMeia;
                 continue;
             }

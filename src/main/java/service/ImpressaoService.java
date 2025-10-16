@@ -54,10 +54,12 @@ public class ImpressaoService {
         List<String> productLines = new ArrayList<>();
         String currentProduct = produto;
 
+        Integer lenghtpro = currentProduct.length();
+
         while (currentProduct.length() > maxProductLengthForPriceLine) {
             int cutPoint = LARGURA_MAXIMA;
 
-            int lastSpace = currentProduct.substring(0, LARGURA_MAXIMA).lastIndexOf(' ');
+            int lastSpace = currentProduct.substring(0, Math.min(LARGURA_MAXIMA, currentProduct.length())).lastIndexOf(' ');
 
             if (lastSpace > 0) {
                 cutPoint = lastSpace;

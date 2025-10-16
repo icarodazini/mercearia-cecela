@@ -12,15 +12,15 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-public class TextoService {
+public class FormatadorComandaService {
 
-    private static final int LARGURA_TOTAL = 31;
+    private static final int LARGURA_TOTAL = 32;
     private static final int ESPACO_FIXO_PRODUTO = 6;
     private static final String PREFIXO_PRECO = "R$ ";
     private static final String NOME_EMPRESA = "BAR DA CECELA";
     private static final String FORMATO_DATA_HORA = "dd/MM/yyyy_HH:mm:ss";
-
     private static final DecimalFormat FORMATO_DECIMAL;
+    private static final String PREFIXO_MEIA = " (MEIA) ";
 
     static {
         DecimalFormatSymbols simbolosBr = new DecimalFormatSymbols(new Locale("pt", "BR"));
@@ -30,8 +30,10 @@ public class TextoService {
     public String salvarComandaTxt(Comanda comanda) {
         LocalDateTime dataAgora = LocalDateTime.now();
         String dataFormatada = dataAgora.format(DateTimeFormatter.ofPattern(FORMATO_DATA_HORA));
+        GerenciadorCaminhoArquivo gerenciadorCaminhoArquivo = new GerenciadorCaminhoArquivo();
 
-        String nomeArquivo = "comanda_mesa_" + comanda.getMesa() + ".txt";
+        String nomeArquivo = gerenciadorCaminhoArquivo.percorreCaminhoArquivoComanda(comanda, dataAgora);
+
         String pathCompleto = new File(nomeArquivo).getAbsolutePath();
 
         try (FileWriter fw = new FileWriter(nomeArquivo, true);
@@ -66,6 +68,14 @@ public class TextoService {
     }
 
     private String formatarLinhaProduto(Produto produto, double valorTotalLinha) {
+        if (produto.getIsMeia()) {
+            String precoStrMeia = PREFIXO_PRECO + FORMATO_DECIMAL.format(valorTotalLinha);
+            String prefixoQtdeMeia = produto.getQuantidade() + "x ";
+            String nomeCompletoMeia = prefixoQtdeMeia + produto.getNomeProduto() + PREFIXO_MEIA;
+
+            return nomeCompletoMeia + precoStrMeia + "\n";
+        }
+
         String precoStr = PREFIXO_PRECO + FORMATO_DECIMAL.format(valorTotalLinha);
         String prefixoQtde = produto.getQuantidade() + "x ";
 
